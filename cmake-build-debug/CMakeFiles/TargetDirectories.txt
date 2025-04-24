@@ -1,0 +1,3 @@
+C:/Users/surfaceLaptop2/CLionProjects/pairmonopoly/cmake-build-debug/CMakeFiles/pairmonopoly.dir
+C:/Users/surfaceLaptop2/CLionProjects/pairmonopoly/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/surfaceLaptop2/CLionProjects/pairmonopoly/cmake-build-debug/CMakeFiles/rebuild_cache.dir

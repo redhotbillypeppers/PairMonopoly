@@ -7,7 +7,6 @@
 #include "playerAndPositionClass.h"
 #include <limits>
 
-//hello irvin
 
 
 #define MAX_SQUARES 20
@@ -16,13 +15,7 @@ int cardType;
 std::string cardAction;
 
 //this function is a simple wrapper to clear the cin terminals,
-//first it clears the terminal then ignores any errors in the terminal.
-void cinClear() {
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-}
-
-void displayBoard(int playerPosition, Player dec[]) {
+void displayBoard(int playerPosition, Player dec[], int plyrcount) {
     // function is used in choice 4 of the game to summon the board and gives you the player position too
 
     //Prototypes:
@@ -34,20 +27,35 @@ void displayBoard(int playerPosition, Player dec[]) {
     //( hotel  ) hotel
     std::string homeTier[6] = {"          ", "(h       )", "(h h     )","(h h  h  )", "(h h  h h)","( hotel  )"};
 
+
     std::string p[20];
     for (int i = 0; i < 20; i++) {
         p[i] = homeTier[squareStats[i].propertyHouse];
     }
 
+    //initialize the piece slots
     char t[20][4];
-    for (int i = 0, j = 0; i < 20; i++, j++) {
 
+    //this loop wipes the piece indicators and makes them all blank (' ')
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 4; j++) {
+                t[i][j] = ' ';
+        }
     }
 
+    for (int i = 0; i < plyrcount; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (t[dec[i].position-1][j] == ' ') {
+                t[dec[i].position-1][j] = dec[i].pieceIndicator;
+                break;
+            }
+        }
+    }
 
+    //<<t[0][0]<<
 
-    std::cout <<             "                                                                                   \n" ;
-    std::cout <<             "  ________________$50_________$75_________$150________$100________________  "          << "\n" ;
+    std::cout <<             "                "<<t[1][0]<<" "<<t[1][1]<<"  "<<t[1][2]<<" "<<t[1][3]<<"    "<<t[2][0]<<" "<<t[2][1]<<"  "<<t[2][2]<<" "<<t[2][3]<<"    "<<t[3][0]<<" "<<t[3][1]<<"  "<<t[3][2]<<" "<<t[3][3]<<"    "<<t[4][0]<<" "<<t[4][1]<<"  "<<t[4][2]<<" "<<t[4][3]<<"                 \n" ;
+    std::cout <<             "   ________________$50_________$75_________$150________$100________________  "          << "\n" ;
     std::cout << t[0][0] <<  "  |"<<p[0]<<"||"<<p[1]<<"||"<<p[2]<<"||"<<p[3]<<"||"<<p[4]<<"||"<<p[5]<<"|  " << t[5][0] << "\n" ;
     std::cout << t[0][1] <<  "  |   Go     ||  Broad   ||  Manton  ||  Water   || Hartford ||  Prison  |  " <<  t[5][1] << "\n" ;
     std::cout << t[0][2] <<  "  |  ---->   ||  Street  ||  Ave     ||  Utility ||  Ave     ||          |  " << t[5][2] << "\n" ;
@@ -72,10 +80,17 @@ void displayBoard(int playerPosition, Player dec[]) {
     std::cout << t[15][1] << "  |  Go To   || Jewelry  || Electric ||  Thayer  ||Wickenden || Vacation |  " << t[10][1] << "\n" ;
     std::cout << t[15][2] << "  |  Prison  || District || Utility  ||  Street  ||  Street  ||          |  " << t[10][2] << "\n" ;
     std::cout << t[15][3] << "  |__________||__________||__________||__________||__________||__________|  " << t[10][3] << "\n" ;
-    std::cout <<             "                                                                             \n\n";
-
+    std::cout << "                "<<t[14][0]<<" "<<t[14][1]<<"  "<<t[14][2]<<" "<<t[14][3]<<"    "<<t[13][0]<<" "<<t[13][1]<<"  "<<t[13][2]<<" "<<t[13][3]<<"    "<<t[12][0]<<" "<<t[12][1]<<"  "<<t[12][2]<<" "<<t[12][3]<<"    "<<t[11][0]<<" "<<t[11][1]<<"  "<<t[11][2]<<" "<<t[11][3]<<"                \n\n";
 
     std::cout << "Current Player Position: " << playerPosition << "\n";
+
+}
+
+//first it clears the terminal then ignores any errors in the terminal.
+
+void cinClear() {
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
 // Function to calculate the cost of buying a house on a property
@@ -119,8 +134,18 @@ void playerSetup(Player dec[], int plyrcount) { // start of the game which sets 
 }
 */
 
+
+//function that allows the player to set the token that they want to play
+//
 void playerSelectTokenFunction(Player dec[], int plyrcount) {
+
+    //initialize piece indicators and player tokens.
     std::vector<std::string> playerToken = {"Peter Griffin" ,"Taylor Swift","Submarine","Pizza Strip"};
+    char pIndicator[5]  ={' ', 'P', 'T','S','Z'};
+
+    //this for loop cycles between the players so that the correct amount of players would be able to
+    //be able to input the token that they want to be able to use.
+
     for (int i=0; i < plyrcount; i++) {
         //'lambda' function that prints list of tokens
         auto tokenPrinter = [&](){
@@ -134,12 +159,16 @@ void playerSelectTokenFunction(Player dec[], int plyrcount) {
         int choice = 0;
         std::cout << std::endl;
         std::cin >> (choice);
-        //token taken code
+
+        //invalid output for when a token has already been taken
         while (playerToken[choice-1] == "Taken!"){
             std::cout << "That token is being used! Please select another one.\n";
             tokenPrinter();
             std::cin >> choice;
         }
+
+        //in case if a user inputs something like k when it's asking for an integer,
+        //or if the user inputs an out-of-bounds integer.
         while (std::cin.fail() || choice<1 || choice>playerToken.size()) {
             std::cout << "You have inputted an invalid response\n";
             std::cin.clear();
@@ -148,12 +177,14 @@ void playerSelectTokenFunction(Player dec[], int plyrcount) {
             std::cin >> choice;
         }
         std::cout << "You have chosen: " << playerToken[(choice-1)] << "!" << std::endl;
+
+        //sets the correct player class variables, pieceIndicator and piece so that can be used elsewhere
+        dec[i].pieceIndicator = pIndicator[choice];
         dec[i].piece = playerToken[(choice-1)];
         playerToken[(choice-1)] = "Taken!";
 
     }
 }
-
 
 void buyProperty(Player &player, boardSquare &square) { // property buying function used later!
     if (player.money >= square.propertyValue) {
@@ -509,7 +540,7 @@ case 2: {
 
     case 4: // choice 4 brings up the display board with a function giving the player position parameter
         std::cout << "\n";
-        displayBoard(dec[i].position, dec);
+        displayBoard(dec[i].position, dec, plyrcount);
         break;
 
     case 5: // if player choice is 5 it ends the game

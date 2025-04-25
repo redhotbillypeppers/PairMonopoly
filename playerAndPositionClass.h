@@ -7,6 +7,7 @@ class Player {
 public:
     int position;
     std::string piece;
+    char pieceIndicator;
     int money;
     int pardonCards;
     bool isBankrupt;

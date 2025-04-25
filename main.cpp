@@ -19,7 +19,7 @@ void cinClear() {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
-void displayBoard(int playerPosition) {
+void displayBoard(int playerPosition, Player dec[]) {
     // function is used in choice 4 of the game to summon the board and gives you the player position too
 
     //Prototypes:
@@ -36,31 +36,38 @@ void displayBoard(int playerPosition) {
         p[i] = homeTier[squareStats[i].propertyHouse];
     }
 
-    std::cout << "________________$50_________$75_________$150________$100________________\n";
-    std::cout << "|"<<p[0]<<"||"<<p[1]<<"||"<<p[2]<<"||"<<p[3]<<"||"<<p[4]<<"||"<<p[5]<<"|\n";
-    std::cout << "|   Go     ||  Broad   ||  Manton  ||  Water   || Hartford ||  Prison  |\n";
-    std::cout << "|  ---->   ||  Street  ||  Ave     ||  Utility ||  Ave     ||          |\n";
-    std::cout << "|___$325___||__________||__________||__________||__________||___$125___|\n";
-    std::cout << "|"<<p[19]<<"|                                                |"<<p[6]<<"|\n";
-    std::cout << "| Newport  |                                                |Chalkstone|\n";
-    std::cout << "| Mansions |                                                |    Ave   |\n";
-    std::cout << "|___$300___|                                                |__________|\n";
-    std::cout << "|"<<p[18]<<"|                                                |"<<p[7]<<"|\n";
-    std::cout << "|  Brown   |                                                |  Chance  |\n";
-    std::cout << "|University|                                                |          |\n";
-    std::cout << "|__________|                                                |___$150___|\n";
-    std::cout << "|"<<p[17]<<"|                                                |"<<p[8]<<"|\n";
-    std::cout << "|Community |                                                |  Branch  |\n";
-    std::cout << "|  Chest   |                                                |  Ave     |\n";
-    std::cout << "|___$275___|                                                |___$175___|\n";
-    std::cout << "|"<<p[16]<<"|                                                |"<<p[9]<<"|\n";
-    std::cout << "|  Block   |                                                |  Mount   |\n";
-    std::cout << "|  Island  |                                                | Pleasant |\n";
-    std::cout << "|__________|___$250____ ___$150____ ___$225____ ___$200____ |__________|\n";
-    std::cout << "|"<<p[15]<<"||"<<p[14]<<"||"<<p[13]<<"||"<<p[12]<<"||"<<p[11]<<"||"<<p[10]<<"|\n";
-    std::cout << "|  Go To   || Jewelry  || Electric ||  Thayer  ||Wickenden || Vacation |\n";
-    std::cout << "|  Prison  || District || Utility  ||  Street  ||  Street  ||          |\n";
-    std::cout << "|__________||__________||__________||__________||__________||__________|\n\n";
+    for (int i = 0; i < sizeof(dec) / sizeof(dec[0]); i++) {
+
+
+    }
+    std::cout << "                                                                         \n";
+    std::cout << "  ________________$50_________$75_________$150________$100________________  \n";
+    std::cout << "  |"<<p[0]<<"||"<<p[1]<<"||"<<p[2]<<"||"<<p[3]<<"||"<<p[4]<<"||"<<p[5]<<"|  \n";
+    std::cout << "  |   Go     ||  Broad   ||  Manton  ||  Water   || Hartford ||  Prison  |  \n";
+    std::cout << "  |  ---->   ||  Street  ||  Ave     ||  Utility ||  Ave     ||          |  \n";
+    std::cout << "  |___$325___||__________||__________||__________||__________||___$125___|  \n";
+    std::cout << "  |"<<p[19]<<"|                                                |"<<p[6]<<"|  \n";
+    std::cout << "  | Newport  |                                                |Chalkstone|  \n";
+    std::cout << "  | Mansions |                                                |    Ave   |  \n";
+    std::cout << "  |___$300___|                                                |__________|  \n";
+    std::cout << "  |"<<p[18]<<"|                                                |"<<p[7]<<"|  \n";
+    std::cout << "  |  Brown   |                                                |  Chance  |  \n";
+    std::cout << "  |University|                                                |          |  \n";
+    std::cout << "  |__________|                                                |___$150___|  \n";
+    std::cout << "  |"<<p[17]<<"|                                                |"<<p[8]<<"|  \n";
+    std::cout << "  |Community |                                                |  Branch  |  \n";
+    std::cout << "  |  Chest   |                                                |  Ave     |  \n";
+    std::cout << "  |___$275___|                                                |___$175___|  \n";
+    std::cout << "  |"<<p[16]<<"|                                                |"<<p[9]<<"|  \n";
+    std::cout << "  |  Block   |                                                |  Mount   |  \n";
+    std::cout << "  |  Island  |                                                | Pleasant |  \n";
+    std::cout << "  |__________|___$250____ ___$150____ ___$225____ ___$200____ |__________|  \n";
+    std::cout << "  |"<<p[15]<<"||"<<p[14]<<"||"<<p[13]<<"||"<<p[12]<<"||"<<p[11]<<"||"<<p[10]<<"|  \n";
+    std::cout << "  |  Go To   || Jewelry  || Electric ||  Thayer  ||Wickenden || Vacation | \n";
+    std::cout << "  |  Prison  || District || Utility  ||  Street  ||  Street  ||          |  \n";
+    std::cout << "  |__________||__________||__________||__________||__________||__________|  \n";
+    std::cout << "                                                                             \n\n";
+
 
     std::cout << "Current Player Position: " << playerPosition << "\n";
     std::cout << "Enter \"Return\" to go back to the menu options: ";
@@ -167,7 +174,7 @@ void buyProperty(Player &player, boardSquare &square) { // property buying funct
 
 void drawChanceCard(Player &player) { // function that draws a chance card whenever a player lands on a chance card space
     int card = (rand() % 7) + 1;
-std::cout << "You drew a Chance card!\n";
+    std::cout << "You drew a Chance card!\n";
 
     switch (card) {
         case 1:
@@ -501,7 +508,7 @@ case 2: {
 
     case 4: // choice 4 brings up the display board with a function giving the player position parameter
         std::cout << "\n";
-        displayBoard(dec[i].position);
+        displayBoard(dec[i].position, dec);
         break;
 
     case 5: // if player choice is 5 it ends the game

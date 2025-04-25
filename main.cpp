@@ -43,6 +43,7 @@ void displayBoard(int playerPosition, Player dec[], int plyrcount) {
         }
     }
 
+    //this loop assigns the token indicator to the correct spot in the board below.
     for (int i = 0; i < plyrcount; i++) {
         for (int j = 0; j < 4; j++) {
             if (t[dec[i].position-1][j] == ' ') {
@@ -52,7 +53,8 @@ void displayBoard(int playerPosition, Player dec[], int plyrcount) {
         }
     }
 
-    //<<t[0][0]<<
+
+    //this is the creation of the board with each variable, house stats and where each token is.
 
     std::cout <<             "                "<<t[1][0]<<" "<<t[1][1]<<"  "<<t[1][2]<<" "<<t[1][3]<<"    "<<t[2][0]<<" "<<t[2][1]<<"  "<<t[2][2]<<" "<<t[2][3]<<"    "<<t[3][0]<<" "<<t[3][1]<<"  "<<t[3][2]<<" "<<t[3][3]<<"    "<<t[4][0]<<" "<<t[4][1]<<"  "<<t[4][2]<<" "<<t[4][3]<<"                 \n" ;
     std::cout <<             "   ________________$50_________$75_________$150________$100________________  "          << "\n" ;
@@ -86,8 +88,8 @@ void displayBoard(int playerPosition, Player dec[], int plyrcount) {
 
 }
 
-//first it clears the terminal then ignores any errors in the terminal.
-
+//basic wrapper to clear the cin terminal.
+//first it clears the terminal then ignores any errors in the terminal
 void cinClear() {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -136,7 +138,6 @@ void playerSetup(Player dec[], int plyrcount) { // start of the game which sets 
 
 
 //function that allows the player to set the token that they want to play
-//
 void playerSelectTokenFunction(Player dec[], int plyrcount) {
 
     //initialize piece indicators and player tokens.

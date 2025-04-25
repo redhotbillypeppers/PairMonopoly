@@ -1,4 +1,8 @@
 
+
+//moved class definitions and creation of objects to this .h file, it keeps things a little more organized.
+//this player class defines a player and their stats,
+//money starts at a set amount which is initialized in the program.
 class Player {
 public:
     int position;
@@ -8,6 +12,7 @@ public:
     bool isBankrupt;
     bool isInJail;
 
+    //this method is a general dice roll function(i dont think it has to be a method-ben)
     int diceRollFunction() {
         std::srand(time(NULL));
         int randomRoll = (rand() % 6) + 1;
@@ -15,12 +20,15 @@ public:
         return randomRoll;
     }
 
+    //this method is used for selecting chance and community cards, both of which are defined in the main cpp file.
     int cardRollFunction() {
         std::srand(time(NULL));
         int randomRoll = (rand() % 7);  // Randomly select a card
         return randomRoll;
     }
 };
+
+
 
 class boardSquare {
 public:
@@ -40,14 +48,17 @@ public:
         isCardSquare = card;
     }
 };
+
+
 // name price house
 // Defining an array of properties
+//i dont understand the last parameter of the constructor it seems redundant
 boardSquare squareStats[] = {
     boardSquare("Starting Square", 0, 1, "Ownerless", true, 0),
     boardSquare("Broad St.", 50, 2, "Ownerless", 0),
     boardSquare("Manton Ave.", 75, 3, "Ownerless", 0),
     boardSquare("Water Utility", 150, 4, "Ownerless", 0),
-    boardSquare("Hartord Ave", 100, 5, "Ownerless", 0),
+    boardSquare("Hartford Ave", 100, 5, "Ownerless", 0),
     boardSquare("Prison", 0, 6, "Ownerless", true, 0),
     boardSquare("Chance Card", 0, 7, "Ownerless", true, 0),
     boardSquare("Chalkstone Ave.", 125, 8, "Ownerless", 0),

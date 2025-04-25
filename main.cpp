@@ -3,17 +3,18 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
-#include <ctime>
 #include <vector>
-#include <array>
 #include "playerAndPositionClass.h"
 #include <limits>
 
 
 #define MAX_SQUARES 20
+//what are these ervin?
 int cardType;
 std::string cardAction;
 
+//this function is a simple wrapper to clear the cin terminals,
+//first it clears the terminal then ignores any errors in the terminal.
 void cinClear() {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -36,45 +37,43 @@ void displayBoard(int playerPosition, Player dec[]) {
         p[i] = homeTier[squareStats[i].propertyHouse];
     }
 
-    for (int i = 0; i < sizeof(dec) / sizeof(dec[0]); i++) {
-
+    char t[20][4];
+    for (int i = 0, j = 0; i < 20; i++, j++) {
 
     }
-    std::cout << "                                                                         \n";
-    std::cout << "  ________________$50_________$75_________$150________$100________________  \n";
-    std::cout << "  |"<<p[0]<<"||"<<p[1]<<"||"<<p[2]<<"||"<<p[3]<<"||"<<p[4]<<"||"<<p[5]<<"|  \n";
-    std::cout << "  |   Go     ||  Broad   ||  Manton  ||  Water   || Hartford ||  Prison  |  \n";
-    std::cout << "  |  ---->   ||  Street  ||  Ave     ||  Utility ||  Ave     ||          |  \n";
-    std::cout << "  |___$325___||__________||__________||__________||__________||___$125___|  \n";
-    std::cout << "  |"<<p[19]<<"|                                                |"<<p[6]<<"|  \n";
-    std::cout << "  | Newport  |                                                |Chalkstone|  \n";
-    std::cout << "  | Mansions |                                                |    Ave   |  \n";
-    std::cout << "  |___$300___|                                                |__________|  \n";
-    std::cout << "  |"<<p[18]<<"|                                                |"<<p[7]<<"|  \n";
-    std::cout << "  |  Brown   |                                                |  Chance  |  \n";
-    std::cout << "  |University|                                                |          |  \n";
-    std::cout << "  |__________|                                                |___$150___|  \n";
-    std::cout << "  |"<<p[17]<<"|                                                |"<<p[8]<<"|  \n";
-    std::cout << "  |Community |                                                |  Branch  |  \n";
-    std::cout << "  |  Chest   |                                                |  Ave     |  \n";
-    std::cout << "  |___$275___|                                                |___$175___|  \n";
-    std::cout << "  |"<<p[16]<<"|                                                |"<<p[9]<<"|  \n";
-    std::cout << "  |  Block   |                                                |  Mount   |  \n";
-    std::cout << "  |  Island  |                                                | Pleasant |  \n";
-    std::cout << "  |__________|___$250____ ___$150____ ___$225____ ___$200____ |__________|  \n";
-    std::cout << "  |"<<p[15]<<"||"<<p[14]<<"||"<<p[13]<<"||"<<p[12]<<"||"<<p[11]<<"||"<<p[10]<<"|  \n";
-    std::cout << "  |  Go To   || Jewelry  || Electric ||  Thayer  ||Wickenden || Vacation | \n";
-    std::cout << "  |  Prison  || District || Utility  ||  Street  ||  Street  ||          |  \n";
-    std::cout << "  |__________||__________||__________||__________||__________||__________|  \n";
-    std::cout << "                                                                             \n\n";
+
+
+
+    std::cout <<             "                                                                                   \n" ;
+    std::cout <<             "  ________________$50_________$75_________$150________$100________________  "          << "\n" ;
+    std::cout << t[0][0] <<  "  |"<<p[0]<<"||"<<p[1]<<"||"<<p[2]<<"||"<<p[3]<<"||"<<p[4]<<"||"<<p[5]<<"|  " << t[5][0] << "\n" ;
+    std::cout << t[0][1] <<  "  |   Go     ||  Broad   ||  Manton  ||  Water   || Hartford ||  Prison  |  " <<  t[5][1] << "\n" ;
+    std::cout << t[0][2] <<  "  |  ---->   ||  Street  ||  Ave     ||  Utility ||  Ave     ||          |  " << t[5][2] << "\n" ;
+    std::cout << t[0][3] <<  "  |___$325___||__________||__________||__________||__________||___$125___|  " << t[5][3] << "\n" ;
+    std::cout << t[19][0] << "  |"<<p[19]<<"|                                                |"<<p[6]<<"|  " << t[6][0] << "\n" ;
+    std::cout << t[19][1] << "  | Newport  |                                                |Chalkstone|  " << t[6][1] << "\n" ;
+    std::cout << t[19][2] << "  | Mansions |                                                |    Ave   |  " << t[6][2] << "\n" ;
+    std::cout << t[19][3] << "  |___$300___|                                                |__________|  " << t[6][3] << "\n" ;
+    std::cout << t[18][0] << "  |"<<p[18]<<"|                                                |"<<p[7]<<"|  " << t[7][0] << "\n" ;
+    std::cout << t[18][1] << "  |  Brown   |                                                |  Chance  |  " << t[7][1] << "\n" ;
+    std::cout << t[18][2] << "  |University|                                                |          |  " << t[7][2] << "\n" ;
+    std::cout << t[18][3] << "  |__________|                                                |___$150___|  " << t[7][3] << "\n" ;
+    std::cout << t[17][0] << "  |"<<p[17]<<"|                                                |"<<p[8]<<"|  " << t[8][0] << "\n" ;
+    std::cout << t[17][1] << "  |Community |                                                |  Branch  |  " << t[8][1] << "\n" ;
+    std::cout << t[17][2] << "  |  Chest   |                                                |  Ave     |  " << t[8][2] << "\n" ;
+    std::cout << t[17][3] << "  |___$275___|                                                |___$175___|  " << t[8][3] << "\n" ;
+    std::cout << t[16][0] << "  |"<<p[16]<<"|                                                |"<<p[9]<<"|  " << t[9][0] << "\n" ;
+    std::cout << t[16][1] << "  |  Block   |                                                |  Mount   |  " << t[9][1] << "\n" ;
+    std::cout << t[16][2] << "  |  Island  |                                                | Pleasant |  " << t[9][2] << "\n" ;
+    std::cout << t[16][3] << "  |__________|___$250____ ___$150____ ___$225____ ___$200____ |__________|  " << t[9][3] << "\n" ;
+    std::cout << t[15][0] << "  |"<<p[15]<<"||"<<p[14]<<"||"<<p[13]<<"||"<<p[12]<<"||"<<p[11]<<"||"<<p[10]<<"|  " << t[10][0] << "\n" ;
+    std::cout << t[15][1] << "  |  Go To   || Jewelry  || Electric ||  Thayer  ||Wickenden || Vacation |  " << t[10][1] << "\n" ;
+    std::cout << t[15][2] << "  |  Prison  || District || Utility  ||  Street  ||  Street  ||          |  " << t[10][2] << "\n" ;
+    std::cout << t[15][3] << "  |__________||__________||__________||__________||__________||__________|  " << t[10][3] << "\n" ;
+    std::cout <<             "                                                                             \n\n";
 
 
     std::cout << "Current Player Position: " << playerPosition << "\n";
-    std::cout << "Enter \"Return\" to go back to the menu options: ";
-
-    std::string returnInput;
-    std::cin.ignore(); // to clear any leftover newline character
-    std::getline(std::cin, returnInput); // waits until user presses enter
 }
 
 // Function to calculate the cost of buying a house on a property

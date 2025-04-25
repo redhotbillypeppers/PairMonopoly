@@ -7,6 +7,8 @@
 #include "playerAndPositionClass.h"
 #include <limits>
 
+//hello irvin
+
 
 #define MAX_SQUARES 20
 //what are these ervin?

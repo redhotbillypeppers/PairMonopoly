@@ -79,7 +79,9 @@ int costToBuyHouse(boardSquare &square) {
 int calculateRent(int propertyValue, int propertyHouse) { // function used to calculate rent and is used for rent logic later
     return propertyValue * (1 + propertyHouse);  // Rent formula
 }
-
+/* Unused Code
+ *
+ *
 void playerSetup(Player dec[], int plyrcount) { // start of the game which sets up a dynamic array to store them and keeps track of them
     std::vector<std::string> playerToken = {"PLACEHOLDER1", "PLACEHOLDER2", "PLACEHOLDER3", "PLACEHOLDER4"};
     std::vector<std::string> chosenTokens;
@@ -107,6 +109,7 @@ void playerSetup(Player dec[], int plyrcount) { // start of the game which sets 
         }
     }
 }
+*/
 
 void playerSelectTokenFunction(Player dec[], int plyrcount) {
     std::vector<std::string> playerToken = {"Peter Griffin" ,"Taylor Swift","Submarine","Pizza Strip"};
@@ -298,7 +301,7 @@ void monopolyGame() {
               // Check if the player has a pardon card, jail logic starts here --------------
               char choice;
 
-if (dec[i].isInJail) {
+    if (dec[i].isInJail) {
     if (dec[i].pardonCards) {
         bool validInput = false;
 
@@ -313,7 +316,6 @@ if (dec[i].isInJail) {
                 validInput = true;
             } else if (choice == 'N' || choice == 'n') {
                 int diceRoll = dec[i].diceRollFunction();
-                std::cout << "You rolled a " << diceRoll << "!\n";
 
                 if (diceRoll % 2 == 0) {
                     std::cout << "You rolled an even number! You are out of jail.\n\n";
@@ -331,7 +333,6 @@ if (dec[i].isInJail) {
     } else {
         std::cout << "You don’t have any pardon cards!\n";
         int diceRoll = dec[i].diceRollFunction();
-        std::cout << "You rolled a " << diceRoll << "!\n";
 
         if (diceRoll % 2 == 0) {
             std::cout << "You rolled an even number! You are out of jail.\n\n";
@@ -357,38 +358,34 @@ if (dec[i].isInJail) {
             dec[i].position -= 19;
             continue;
         }
-    std::cout << "\n" << dec[i].piece << " has landed on " << squareStats[dec[i].position].propertyPosition << "\n";
-
     if (dec[i].position == 6) {  // from here below are special cases for spots that call different functions ---------
         drawChanceCard(dec[i]);
-        endTurn = true;
     }
     else if (dec[i].position == 17) {
       drawCommunityCard(dec[i]);
-      endTurn = true;
     }
     else if (squareStats[dec[i].position].propertyPosition == squareStats[15].propertyPosition) {
-      std::cout << "You have landed on " << squareStats[15].propertyName; std::cout << "\nBeing sent to jail...\n\n";
+      std::cout << dec[i].piece <<  " has landed on " << squareStats[15].propertyName; std::cout << "\nBeing sent to jail...\n\n";
       dec[i].position = 6;
       dec[i].isInJail = true;
-      endTurn = true;
     }
     else if (squareStats[dec[i].position].propertyPosition == squareStats[5].propertyPosition) {
-      std::cout << "You have landed on prison visitation! (Point and laugh at anyone still in jail!)\n";
-      endTurn = true;
+      std::cout << dec[i].piece <<  " has landed on prison visitation! (Point and laugh at anyone still in jail!)\n";
     }
+
     else if (squareStats[dec[i].position].propertyPosition == squareStats[10].propertyPosition) {
-      std::cout << "You have landed on a vacation square! Take a break!\n";
+      std::cout << dec[i].piece <<  " has landed on a vacation square! Take a break!\n";
     }
+
     else if (squareStats[dec[i].position].propertyOwner == "Ownerless" && !squareStats[dec[i].position].isCardSquare){ //code overwritten here
-      std::cout << "You have landed on " << squareStats[dec[i].position].propertyName;
+      std::cout << dec[i].piece <<  " has landed on " << squareStats[dec[i].position].propertyName;
       std::cout << "\n\nWould you like to buy this property for $" << squareStats[dec[i].position].propertyValue << "? (Yes or No)\n";
       std::cin >> plyrpropinput;
 
         if (plyrpropinput == "Yes") {
           dec[i].money -= squareStats[dec[i].position].propertyValue;
 
-          std::cout << "You have bought " << squareStats[dec[i].position].propertyName << "\n";
+          std::cout << dec[i].piece <<  " has bought " << squareStats[dec[i].position].propertyName << "\n";
 
           squareStats[dec[i].position].propertyOwner = dec[i].piece;
 
@@ -465,7 +462,7 @@ case 2: {
                     std::cout << "Enter 'Yes' to buy a house or 'No' to skip: ";
                     std::cin >> plyrpropinput;
 
-                    if (plyrpropinput == "Yes") { //property buying function!
+                    if (plyrpropinput == "Yes") {
                         if (square.propertyHouse < 4) {
                             // Deduct money from the player and increase the house count
                             int houseCost = (square.propertyValue * 0.5) * (1 + square.propertyHouse);

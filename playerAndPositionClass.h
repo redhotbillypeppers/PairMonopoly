@@ -11,6 +11,7 @@ public:
     int diceRollFunction() {
         std::srand(time(NULL));
         int randomRoll = (rand() % 6) + 1;
+        std::cout << "You rolled a " << randomRoll << std::endl;
         return randomRoll;
     }
 

@@ -30,7 +30,7 @@ public:
 };
 
 
-
+//this class creates properties for the board
 class boardSquare {
 public:
     std::string propertyName;

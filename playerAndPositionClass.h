@@ -53,7 +53,6 @@ public:
 
 // name price house
 // Defining an array of properties
-//i dont understand the last parameter of the constructor it seems redundant
 boardSquare squareStats[] = {
     boardSquare("Starting Square", 0, 1, "Ownerless", true, 0),
     boardSquare("Broad St.", 50, 2, "Ownerless", 0),

@@ -9,11 +9,6 @@
 #include <limits>
 
 
-#define MAX_SQUARES 20
-//what are these ervin?
-int cardType;
-std::string cardAction;
-
 //this function is a simple wrapper to clear the cin terminals,
 //first it clears the terminal then ignores any errors in the terminal.
 void cinClear() {
@@ -103,46 +98,15 @@ int costToBuyHouse(boardSquare &square) {
 int calculateRent(int propertyValue, int propertyHouse) { // function used to calculate rent and is used for rent logic later
     return propertyValue * (1 + propertyHouse);  // Rent formula
 }
-/* Unused Code
- *
- *
-void playerSetup(Player dec[], int plyrcount) { // start of the game which sets up a dynamic array to store them and keeps track of them
-    std::vector<std::string> playerToken = {"PLACEHOLDER1", "PLACEHOLDER2", "PLACEHOLDER3", "PLACEHOLDER4"};
-    std::vector<std::string> chosenTokens;
 
-    for (int i = 0; i < plyrcount; i++) {
-        bool validChoice = false;
-        while (!validChoice) {
-            std::cout << "Player " << (i + 1) << ", name your token: ";
-            std::cin >> dec[i].piece;
-
-            bool tokenExists = false;
-            for (int j = 0; j < i; j++) {
-                if (dec[i].piece == dec[j].piece) {
-                    tokenExists = true;
-                    break;
-                }
-            }
-
-            if (!tokenExists) {
-                validChoice = true;
-                chosenTokens.push_back(dec[i].piece);
-            } else {
-                std::cout << "Token already taken! Please choose another one.\n";
-            }
-        }
-    }
-}
-*/
-
+//this function allows the user to be able to select their token from a predetermined list of them.
 void playerSelectTokenFunction(Player dec[], int plyrcount) {
-    char s[4] = {'P','T','S','Z'};
-    std::vector<std::string> playerToken = {"Peter Griffin" ,"Taylor Swift","Submarine","Pizza Strip"};
-    for (int i=0; i < plyrcount; i++) {
-        //'lambda' function that prints list of tokens
-        auto tokenPrinter = [&](){
+    char s[4] = {'P','T','S','Z'}; // player token symbols to be used in the board
+    std::vector<std::string> playerToken = {"Peter Griffin" ,"Taylor Swift","Submarine","Pizza Strip"}; //the 4 different player tokens
+    for (int i=0; i < plyrcount; i++) { // function will iterated based on the amount of players the user entered
+        auto tokenPrinter = [&](){//'lambda' function that prints list of tokens
             std::cout << "Player " << i+1 << ", select your player token!";
-            for (int j=0; j < playerToken.size(); j++) {
+            for (int j=0; j < playerToken.size(); j++) { // this will print the list of tokens, is a vector because we were hoping to implement the user making tokens but we didn't have enough time
                 std::cout << "\n" << j+1 <<  ". " << playerToken[j];
             }
             std::cout << std::endl;
@@ -151,14 +115,14 @@ void playerSelectTokenFunction(Player dec[], int plyrcount) {
         int choice = 0;
         std::cout << std::endl;
         std::cin >> (choice);
-        //token taken code
-        while (playerToken[choice-1] == "Taken!"){
-            std::cout << "That token is being used! Please select another one.\n";
-            tokenPrinter();
-            std::cin >> choice;
-        }
-        while (std::cin.fail() || choice<1 || choice>playerToken.size()) {
-            std::cout << "You have inputted an invalid response\n";
+
+        while (std::cin.fail() || choice < 1 || choice > playerToken.size() || playerToken[choice-1] == "Taken!") { // invalid input code
+            if (playerToken[choice-1] == "Taken!") {// originally I had this condition as a separate while statement like this one. But because if a user were to try to take a taken token then enter something like 'easd'
+                                                    // the game would enter into an unbreakable loop. So I combined the two.
+                std::cout << "That token is being used, please select another one!" << std::endl;
+            } else {
+                std::cout << "You have inputted an invalid response.\n";
+            }
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             tokenPrinter();
@@ -166,9 +130,9 @@ void playerSelectTokenFunction(Player dec[], int plyrcount) {
         }
         std::cout << "You have chosen: " << playerToken[(choice-1)] << "!" << std::endl;
 
-        dec[i].pieceIndicator = s[choice-1];
-        dec[i].piece = playerToken[(choice-1)];
-        playerToken[(choice-1)] = "Taken!";
+        dec[i].pieceIndicator = s[choice-1]; // assigns the correct token indicator
+        dec[i].piece = playerToken[(choice-1)]; //assigns the token the user wanted
+        playerToken[(choice-1)] = "Taken!"; // makes the token = taken so that others won't be able to use it
 
     }
 }

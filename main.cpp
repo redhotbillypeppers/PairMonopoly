@@ -1,4 +1,5 @@
-// g++ monopolyworkspace/practice.cpp -o monopolyworkspace/practice && ./monopolyworkspace/practice
+// g++ monopolyworkspace/clionmonopolygame.cpp -o monopolyworkspace/clionmonopolygame && ./monopolyworkspace/clionmonopolygame
+
 
 #include <iostream>
 #include <string>
@@ -8,13 +9,18 @@
 #include <limits>
 
 
-
 #define MAX_SQUARES 20
 //what are these ervin?
 int cardType;
 std::string cardAction;
 
 //this function is a simple wrapper to clear the cin terminals,
+//first it clears the terminal then ignores any errors in the terminal.
+void cinClear() {
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
 void displayBoard(int playerPosition, Player dec[], int plyrcount) {
     // function is used in choice 4 of the game to summon the board and gives you the player position too
 
@@ -46,8 +52,8 @@ void displayBoard(int playerPosition, Player dec[], int plyrcount) {
     //this loop assigns the token indicator to the correct spot in the board below.
     for (int i = 0; i < plyrcount; i++) {
         for (int j = 0; j < 4; j++) {
-            if (t[dec[i].position-1][j] == ' ') {
-                t[dec[i].position-1][j] = dec[i].pieceIndicator;
+            if (t[dec[i].position][j] == ' ') {
+                t[dec[i].position][j] = dec[i].pieceIndicator;
                 break;
             }
         }
@@ -56,7 +62,7 @@ void displayBoard(int playerPosition, Player dec[], int plyrcount) {
 
     //this is the creation of the board with each variable, house stats and where each token is.
 
-    std::cout <<             "                "<<t[1][0]<<" "<<t[1][1]<<"  "<<t[1][2]<<" "<<t[1][3]<<"    "<<t[2][0]<<" "<<t[2][1]<<"  "<<t[2][2]<<" "<<t[2][3]<<"    "<<t[3][0]<<" "<<t[3][1]<<"  "<<t[3][2]<<" "<<t[3][3]<<"    "<<t[4][0]<<" "<<t[4][1]<<"  "<<t[4][2]<<" "<<t[4][3]<<"                 \n" ;
+    std::cout << "                "<<t[1][0]<<" "<<t[1][1]<<"  "<<t[1][2]<<" "<<t[1][3]<<"    "<<t[2][0]<<" "<<t[2][1]<<"  "<<t[2][2]<<" "<<t[2][3]<<"    "<<t[3][0]<<" "<<t[3][1]<<"  "<<t[3][2]<<" "<<t[3][3]<<"    "<<t[4][0]<<" "<<t[4][1]<<"  "<<t[4][2]<<" "<<t[4][3]<<"                 \n" ;
     std::cout <<             "   ________________$50_________$75_________$150________$100________________  "          << "\n" ;
     std::cout << t[0][0] <<  "  |"<<p[0]<<"||"<<p[1]<<"||"<<p[2]<<"||"<<p[3]<<"||"<<p[4]<<"||"<<p[5]<<"|  " << t[5][0] << "\n" ;
     std::cout << t[0][1] <<  "  |   Go     ||  Broad   ||  Manton  ||  Water   || Hartford ||  Prison  |  " <<  t[5][1] << "\n" ;
@@ -86,13 +92,6 @@ void displayBoard(int playerPosition, Player dec[], int plyrcount) {
 
     std::cout << "Current Player Position: " << playerPosition << "\n";
 
-}
-
-//basic wrapper to clear the cin terminal.
-//first it clears the terminal then ignores any errors in the terminal
-void cinClear() {
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
 // Function to calculate the cost of buying a house on a property
@@ -136,17 +135,9 @@ void playerSetup(Player dec[], int plyrcount) { // start of the game which sets 
 }
 */
 
-
-//function that allows the player to set the token that they want to play
 void playerSelectTokenFunction(Player dec[], int plyrcount) {
-
-    //initialize piece indicators and player tokens.
+    char s[4] = {'P','T','S','Z'};
     std::vector<std::string> playerToken = {"Peter Griffin" ,"Taylor Swift","Submarine","Pizza Strip"};
-    char pIndicator[5]  ={' ', 'P', 'T','S','Z'};
-
-    //this for loop cycles between the players so that the correct amount of players would be able to
-    //be able to input the token that they want to be able to use.
-
     for (int i=0; i < plyrcount; i++) {
         //'lambda' function that prints list of tokens
         auto tokenPrinter = [&](){
@@ -160,16 +151,12 @@ void playerSelectTokenFunction(Player dec[], int plyrcount) {
         int choice = 0;
         std::cout << std::endl;
         std::cin >> (choice);
-
-        //invalid output for when a token has already been taken
+        //token taken code
         while (playerToken[choice-1] == "Taken!"){
             std::cout << "That token is being used! Please select another one.\n";
             tokenPrinter();
             std::cin >> choice;
         }
-
-        //in case if a user inputs something like k when it's asking for an integer,
-        //or if the user inputs an out-of-bounds integer.
         while (std::cin.fail() || choice<1 || choice>playerToken.size()) {
             std::cout << "You have inputted an invalid response\n";
             std::cin.clear();
@@ -179,8 +166,7 @@ void playerSelectTokenFunction(Player dec[], int plyrcount) {
         }
         std::cout << "You have chosen: " << playerToken[(choice-1)] << "!" << std::endl;
 
-        //sets the correct player class variables, pieceIndicator and piece so that can be used elsewhere
-        dec[i].pieceIndicator = pIndicator[choice];
+        dec[i].pieceIndicator = s[choice-1];
         dec[i].piece = playerToken[(choice-1)];
         playerToken[(choice-1)] = "Taken!";
 
@@ -286,12 +272,14 @@ void monopolyGame() {
     std::cout << "---------------------------\n| Welcome to RI MONOPOLY! |\n---------------------------\n";
     std::cout <<  "Please enter the # of players from 2 to 4: ";
     std::cin >> plyrcount;
-    while(std::cin.fail() || plyrcount < 2 || plyrcount > 4){
+
+    while(std::cin.fail() || plyrcount < 2 || plyrcount > 4) {
         std::cout << "\nYou have entered an invalid amount of players.\nPlease enter a # of players from 2 to 4: ";
         cinClear();
         plyrcount = 0;
         std::cin >> plyrcount;
     }
+
     std::cout << "You have entered " << plyrcount << " players!\n" << std::endl;
     Player dec[plyrcount]; //array creation for the players
 
@@ -299,7 +287,7 @@ void monopolyGame() {
 
     for (int i = 0; i < plyrcount; i++) { // sets up the tokens including all of their parameters
         dec[i].money = 1250;
-        dec[i].position = 1;
+        dec[i].position = 0;
         dec[i].pardonCards = 0;
         dec[i].isBankrupt = false;
         dec[i].isInJail = false;
@@ -349,6 +337,12 @@ void monopolyGame() {
             std::cout << "\nYou have a pardon card! Would you like to use it to get out of jail? (Y/N): ";
             std::cin >> choice;
 
+            while (std::cin.fail() || (choice != 'Y' && choice != 'y' && choice != 'N' && choice != 'n')) {
+                std::cout << "Invalid input, please enter Y or N: ";
+                cinClear();
+                std::cin >> choice;
+            }
+
             if (choice == 'Y' || choice == 'y') {
                 dec[i].isInJail = false;
                 std::cout << "You used your pardon card to get out of jail!\n";
@@ -388,27 +382,39 @@ void monopolyGame() {
                   std::cout << "\nIt is now " << dec[i].piece << "'s turn! \n - Enter 1 to roll the die, \n - Enter 2 to manage your properties, \n - Enter 3 to declare bankruptcy, \n - Enter 4 to view the board,\n - Enter 5 to exit the game!\n";
                   std::cin >> plyrchoice;
 
+                while (plyrchoice != 1 && plyrchoice != 2 && plyrchoice != 3 && plyrchoice != 4 && plyrchoice != 5) {
+                        std::cout << "Invalid input, please type a valid integer. \n\n Please enter 1 to roll the die, \n - Enter 2 to manage your properties, \n - Enter 3 to declare bankruptcy, \n - Enter 4 to view the board,\n - Enter 5 to exit the game!\n ";
+                        cinClear();
+                        std::cin >> plyrchoice;
+                    }
+
+
+
                   std::string bankruptcyChoice; // Declare the variable here, outside the switch statement
                     }
             switch (plyrchoice) {
     case 1:
     dec[i].position += dec[i].diceRollFunction(); // Add dice roll to position
-        if (dec[i].position > 20) {
+        if (dec[i].position > 19) {
             dec[i].money += 225;
-            dec[i].position -= 19;
+            dec[i].position -= 20;
             continue;
         }
-    if (dec[i].position == 6) {  // from here below are special cases for spots that call different functions ---------
+                displayBoard(dec[i].position, dec, plyrcount);
+
+                if (dec[i].position == 7) {  // from here below are special cases for spots that call different functions ---------
         drawChanceCard(dec[i]);
     }
     else if (dec[i].position == 17) {
       drawCommunityCard(dec[i]);
     }
-    else if (squareStats[dec[i].position].propertyPosition == squareStats[15].propertyPosition) {
+    else if (dec[i].position == 15) {
       std::cout << dec[i].piece <<  " has landed on " << squareStats[15].propertyName; std::cout << "\nBeing sent to jail...\n\n";
-      dec[i].position = 6;
+      dec[i].position = 5;
+
       dec[i].isInJail = true;
     }
+
     else if (squareStats[dec[i].position].propertyPosition == squareStats[5].propertyPosition) {
       std::cout << dec[i].piece <<  " has landed on prison visitation! (Point and laugh at anyone still in jail!)\n";
     }
@@ -421,6 +427,21 @@ void monopolyGame() {
       std::cout << dec[i].piece <<  " has landed on " << squareStats[dec[i].position].propertyName;
       std::cout << "\n\nWould you like to buy this property for $" << squareStats[dec[i].position].propertyValue << "? (Yes or No)\n";
       std::cin >> plyrpropinput;
+
+        while (plyrpropinput != "Yes" && plyrpropinput != "No") {
+            std::cout << "Invalid input, please type Yes or No: ";
+            std::cin >> plyrpropinput;
+        }
+
+        if (plyrpropinput == "Yes") {
+            dec[i].money -= squareStats[dec[i].position].propertyValue;
+
+            std::cout << dec[i].piece <<  " has bought " << squareStats[dec[i].position].propertyName << "\n";
+
+            squareStats[dec[i].position].propertyOwner = dec[i].piece;
+
+            std::cout << "\nYou have " << dec[i].money << " dollars left!\n";
+        }
 
         if (plyrpropinput == "Yes") {
           dec[i].money -= squareStats[dec[i].position].propertyValue;
@@ -491,6 +512,12 @@ case 2: {
         std::cout << "Would you like to buy a house for any of your properties? (Yes/No): \n";
         std::cin >> plyrpropinput;
 
+        while (plyrpropinput != "Yes" && plyrpropinput != "No") {
+            std::cout << "Invalid input, please type Yes or No: ";
+            cinClear();
+            std::cin >> plyrpropinput;
+        }
+
         if (plyrpropinput == "Yes") {
             // Iterate over the owned properties to allow the player to manage them
             for (auto &square : squareStats) {
@@ -501,6 +528,12 @@ case 2: {
                     std::cout << "Current houses: " << square.propertyHouse << " (Max: 4)\n";
                     std::cout << "Enter 'Yes' to buy a house or 'No' to skip: ";
                     std::cin >> plyrpropinput;
+
+                    while (plyrpropinput != "Yes" && plyrpropinput != "No") {
+                        std::cout << "Invalid input, please type Yes or No: ";
+                        cinClear();
+                        std::cin >> plyrpropinput;
+                    }
 
                     if (plyrpropinput == "Yes") {
                         if (square.propertyHouse < 4) {
@@ -528,6 +561,13 @@ case 2: {
     case 3: // makes bankruptcy bool true for current player
         std::cout << "\nAre you sure you want to file for bankruptcy? (Yes or No)\n";
         std::cin >> bankruptcyChoice;
+
+                    while (bankruptcyChoice != "Yes" && bankruptcyChoice != "No") {
+                        std::cout << "Invalid input, please type Yes or No: ";
+                        cinClear();
+                        std::cin >> bankruptcyChoice;
+                    }
+
         if (bankruptcyChoice == "Yes") {
             std::cout << "\nYou have filed for bankruptcy and are now eliminated from the game!\n";
             dec[i].money = 0;

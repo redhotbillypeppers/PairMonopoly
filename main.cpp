@@ -362,6 +362,9 @@ void monopolyGame() {
             for (int i = 0; i < plyrcount; i++) {
                 if (!dec[i].isBankrupt) {
                     std::cout << "\nCongratulations! " << dec[i].piece << " is the winner!\n";
+                    std::ofstream monopolyData("monopolyData.txt");
+                    monopolyData << " ";
+                    monopolyData.close();
                     gameRunning = false;  // End the game
                     break;
                 }

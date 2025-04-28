@@ -1,12 +1,13 @@
 // g++ monopolyworkspace/clionmonopolygame.cpp -o monopolyworkspace/clionmonopolygame && ./monopolyworkspace/clionmonopolygame
 
-
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <cstdlib>
 #include <vector>
-#include "playerAndPositionClass.h"
+#include <sstream>
 #include <limits>
+#include "playerAndPositionClass.h"
 
 
 //this function is a simple wrapper to clear the cin terminals,
@@ -137,6 +138,23 @@ void playerSelectTokenFunction(Player dec[], int plyrcount) {
     }
 }
 
+int playerCount () {
+    int plyrcount;
+    std::cout << "---------------------------\n| Welcome to RI MONOPOLY! |\n---------------------------\n";
+    std::cout <<  "Please enter the # of players from 2 to 4: ";
+    std::cin >> plyrcount;
+
+    while(std::cin.fail() || plyrcount < 2 || plyrcount > 4) {
+        std::cout << "\nYou have entered an invalid amount of players.\nPlease enter a # of players from 2 to 4: ";
+        cinClear();
+        plyrcount = 0;
+        std::cin >> plyrcount;
+    }
+
+    std::cout << "You have entered " << plyrcount << " players!\n" << std::endl;
+    return plyrcount;
+}
+
 void buyProperty(Player &player, boardSquare &square) { // property buying function used later!
     if (player.money >= square.propertyValue) {
         std::string choice;
@@ -227,37 +245,110 @@ void drawCommunityCard(Player &player) { //function that is called whenever a pl
     }
 }
 
-void monopolyGame() {
-    std::string plyrpropinput; //variables used much later
-    int plyrchoice;
-    int plyrcount;
-    std::string bankruptcyChoice;
+void save(Player dec[],int plyrcount,int lastPlayerTurn) {
+    std::ofstream monopolyData("monopolyData.txt"); // open/create the monopoly data file
+    if (monopolyData.is_open()) { //if file is open then do this
+        monopolyData << plyrcount << '\n'; // saves the player count in the first line
+        for (int i = 0; i < plyrcount; i++) { // saves data in this order repeating for the amount of players
+            monopolyData << dec[i].position << '\n';
+            monopolyData << dec[i].piece << '\n';
+            monopolyData << dec[i].pieceIndicator << '\n';
+            monopolyData << dec[i].money << '\n';
+            monopolyData << dec[i].pardonCards << '\n';
+            monopolyData << dec[i].isBankrupt << '\n';
+            monopolyData << dec[i].isInJail << '\n';
+        }
+        for (int i = 0; i < 20; i++) { // loop that iterates and saves transmutable values
+            monopolyData << squareStats[i].propertyOwner << '\n';
+            monopolyData << squareStats[i].propertyHouse << '\n';
+        }
+    }else {
+        std::cout << "Error: monopolyData.txt not open" << std::endl; // error message to indicate the file was not opened
+    }
+    monopolyData << lastPlayerTurn;
+    monopolyData.close();
+}
 
-    std::cout << "---------------------------\n| Welcome to RI MONOPOLY! |\n---------------------------\n";
-    std::cout <<  "Please enter the # of players from 2 to 4: ";
-    std::cin >> plyrcount;
+bool initialize(Player dec[],int& plyrcount, int &lastPlayerTurn) {
+    std::string bucket; // temp variable used to hold data
+    std::ifstream monopolyData("monopolyData.txt"); // open file i stream
+    try {
+        std::getline(monopolyData,bucket); // if this throws an invalid argument then return true to initialize new game
+        plyrcount = std::stoi(bucket); // get the amount of players
+    } catch (std::invalid_argument) {
+        return true;
+    }
+    if (std::stoi(bucket) > 1 || std::stoi(bucket) < 5) {
+        for (int i = 0; i < plyrcount; i++) {
+            std::getline(monopolyData, bucket); // get position data
+            dec[i].position = std::stoi(bucket);
 
-    while(std::cin.fail() || plyrcount < 2 || plyrcount > 4) {
-        std::cout << "\nYou have entered an invalid amount of players.\nPlease enter a # of players from 2 to 4: ";
-        cinClear();
-        plyrcount = 0;
-        std::cin >> plyrcount;
+            std::getline(monopolyData, dec[i].piece); // get piece data
+
+            std::getline(monopolyData, bucket); // piece indicator data
+            dec[i].pieceIndicator = bucket[0];
+
+            std::getline(monopolyData, bucket); // get money data
+            dec[i].money = std::stoi(bucket);
+
+            std::getline(monopolyData, bucket); // get pardon card amount data
+            dec[i].pardonCards = std::stoi(bucket);
+
+            std::getline(monopolyData, bucket); // get if bankrupt condition
+            dec[i].isBankrupt = std::stoi(bucket);
+
+            std::getline(monopolyData, bucket); // get if in jail data
+            dec[i].isInJail = std::stoi(bucket);
+        }
+        for (int i = 0; i < 20; i++) {
+            try {
+                std::getline(monopolyData, bucket); // this one gets the data for the squares and iterates for them
+                squareStats[i].propertyOwner = bucket;
+
+                std::getline(monopolyData, bucket);
+                squareStats[i].propertyHouse = std::stoi(bucket);
+            } catch (std::invalid_argument) {
+                std::cout << "invalid argument error at " << i << std::endl;
+                exit(1);
+            }
+        }
+
+        std::getline(monopolyData, bucket); // get the last player turn for the game so the game could start at the right spot from the save
+        lastPlayerTurn =  std::stoi(bucket);
+    } else {
+        std::cout << "Not enough saved players indicated in data index... Restarting game." << std::endl;
+        return true;
     }
 
-    std::cout << "You have entered " << plyrcount << " players!\n" << std::endl;
+    monopolyData.close();
+    std::cout << "Welcome back to RHODE ISLAND MONOPOLY!\n";
+    return false;
+}
+
+void monopolyGame() {
+    std::string plyrpropinput; //variables used much later
+    int plyrchoice; // menu function input variable
+    int plyrcount; // gets the player count from the player count function
+    int lastPlayerTurn = 0; //used for save function, gets the player turn of the last game
+    std::string bankruptcyChoice;
+
+
     Player dec[plyrcount]; //array creation for the players
 
-    playerSelectTokenFunction(dec, plyrcount);  // Call to set up players' token names
-
-    for (int i = 0; i < plyrcount; i++) { // sets up the tokens including all of their parameters
-        dec[i].money = 1250;
-        dec[i].position = 0;
-        dec[i].pardonCards = 0;
-        dec[i].isBankrupt = false;
-        dec[i].isInJail = false;
+    if (initialize(dec, plyrcount, lastPlayerTurn)) {
+        plyrcount = playerCount();
+        playerSelectTokenFunction(dec, plyrcount);  // Call to set up players' token names
+        for (int i = 0; i < plyrcount; i++) { // sets up the tokens including all of their parameters
+            dec[i].money = 1250;
+            dec[i].position = 0;
+            dec[i].pardonCards = 0;
+            dec[i].isBankrupt = false;
+            dec[i].isInJail = false;
+        }
     }
 
     bool gameRunning = true; // gamerunning logic that ends the game if less than 2 players are active
+    bool setPlayer = true; // this bool allows for an if to run once in a loop
     while (gameRunning) {
         int activePlayerCount = 0;  // Counter to track active players
 
@@ -278,7 +369,13 @@ void monopolyGame() {
         }
 
         if (!gameRunning) break; // logic for the game running which checks specific parameters
+
         for (int i = 0; i < plyrcount; i++) {
+            if (setPlayer == true) { // this small if statement sets the player turn to the last player that was saved, if I were to put
+                i = lastPlayerTurn;// it like int i = lastPlayerTurn, its possible that some players turns will be skipped.
+                setPlayer = false;
+            }
+
             if (dec[i].money < 0) {
                 dec[i].isBankrupt = true;
             }
@@ -548,7 +645,8 @@ case 2: {
         displayBoard(dec[i].position, dec, plyrcount);
         break;
 
-    case 5: // if player choice is 5 it ends the game
+                case 5: // if player choice is 5 it ends the game
+        save(dec,plyrcount, i);
         std::cout << "\nExiting the game... Thanks for playing!\n";
         exit(0);  // Terminates the program immediately
     }

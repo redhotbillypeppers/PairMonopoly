@@ -335,7 +335,8 @@ void monopolyGame() {
 
     Player dec[plyrcount]; //array creation for the players
 
-    if (initialize(dec, plyrcount, lastPlayerTurn)) {
+    if (initialize(dec, plyrcount, lastPlayerTurn)) { // if there is data in the game already then just start the
+                                                            // game from where they left off, else initialize a new one
         plyrcount = playerCount();
         playerSelectTokenFunction(dec, plyrcount);  // Call to set up players' token names
         for (int i = 0; i < plyrcount; i++) { // sets up the tokens including all of their parameters

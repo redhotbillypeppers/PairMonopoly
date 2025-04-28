@@ -372,7 +372,7 @@ void monopolyGame() {
                     break;
                 }
             }
-        }co
+        }
 
         if (!gameRunning) break; // logic for the game running which checks specific parameters
 

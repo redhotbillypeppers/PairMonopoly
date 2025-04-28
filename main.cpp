@@ -5,7 +5,6 @@
 #include <string>
 #include <cstdlib>
 #include <vector>
-#include <sstream>
 #include <limits>
 #include "playerAndPositionClass.h"
 
@@ -17,6 +16,7 @@ void cinClear() {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
+//this function displays the board so that the players can see where they are at in the board.
 void displayBoard(int playerPosition, Player dec[], int plyrcount) {
     // function is used in choice 4 of the game to summon the board and gives you the player position too
 
@@ -245,6 +245,7 @@ void drawCommunityCard(Player &player) { //function that is called whenever a pl
     }
 }
 
+//this function saves game data so that they can go back into the game and play it
 void save(Player dec[],int plyrcount,int lastPlayerTurn) {
     std::ofstream monopolyData("monopolyData.txt"); // open/create the monopoly data file
     if (monopolyData.is_open()) { //if file is open then do this
@@ -269,6 +270,7 @@ void save(Player dec[],int plyrcount,int lastPlayerTurn) {
     monopolyData.close();
 }
 
+//this function ckecks if there is data and then proceeds to either initialize a new game or start whey they ended off
 bool initialize(Player dec[],int& plyrcount, int &lastPlayerTurn) {
     std::string bucket; // temp variable used to hold data
     std::ifstream monopolyData("monopolyData.txt"); // open file i stream
@@ -370,7 +372,7 @@ void monopolyGame() {
                     break;
                 }
             }
-        }
+        }co
 
         if (!gameRunning) break; // logic for the game running which checks specific parameters
 

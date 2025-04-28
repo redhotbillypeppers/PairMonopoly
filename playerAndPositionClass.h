@@ -40,6 +40,9 @@ public:
     std::string propertyOwner;
     bool isCardSquare;  // Flag for Chance/Community card square
 
+    //nothing constructor for file io
+    boardSquare() {}
+
     // Constructor
     boardSquare(std::string n, int v, int p, std::string o, bool card = false, int h = 0) {
         propertyName = n;
